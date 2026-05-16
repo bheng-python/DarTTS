@@ -14,7 +14,7 @@ dart_orig = pygame.transform.rotate(dart_orig, 180)#this code rotates the dart s
 dart_orig.set_colorkey((210,211,213))#I had to use something online to find the specific rgb value for the background to get rid of it
 #backgrund
 background = pygame.image.load("background4.jpg").convert_alpha()#this is for loading your basic background where the enemies will be
-background = pygame.transform.scale(background, (800,448))this code is for scaling it to the correct width, I had to use a little math so it would still look ok
+background = pygame.transform.scale(background, (800,448))#this code is for scaling it to the correct width, I had to use a little math so it would still look ok
 ground = pygame.image.load("ground.jpg").convert_alpha()#This is just for loading the ground in which you fire on
 ground = pygame.transform.scale(ground, (800,457))#this code is for scaling it to the correct width, I had to use a little math so it would still look ok
 #enemies
@@ -198,8 +198,8 @@ while running:#this just runs it all
             health = 100#sets health back to 100
         damageable += 0.1#constanlty adds 0.1 to damagable so you can hit targets again
     if shop:#dectets if shop is running then runs follwoing coed
-        mouse_rect = pygame.mouse.get_pos()#allows for mouse movements
-        mouse_rect = pygame.Rect((mouse_rect), 10, 10)#creates a 10 pixel by 10 pixel hit box for mouse
+        #mouse_rect = pygame.mouse.get_pos()#allows for mouse movements
+        #mouse_rect = pygame.Rect((mouse_rect), 10, 10)#creates a 10 pixel by 10 pixel hit box for mouse
         screen.fill((0, 0, 0))#screen fills so there are no blurring
         for event in pygame.event.get():#gets various events, could have used outside of if shop or main menu
             if event.type == pygame.QUIT:#decects if you quit game, might add a quit anniamation
@@ -235,8 +235,8 @@ while running:#this just runs it all
             x2 = 45#sets it back down to 45, absoulte limit
             x3 = 45#sets it back down to 45, absoulte limit
             x4 = 45#sets it back down to 45, absoulte limit
-        if mouse_rect.colliderect(shop_box_1):# dectrects if your mouse is colliding with the shop
-            x1 = 45#sets the colors to 45
+        #if mouse_rect.colliderect(shop_box_1):# dectrects if your mouse is colliding with the shop
+            #x1 = 45#sets the colors to 45
         shop_box = pygame.Rect(25, 25, 750, 550)#creates shop box outer backgroudnd
         pygame.draw.rect(screen, (48, 31, 30), shop_box)#for drawing it
         shop_box_small = pygame.Rect(50, 50, 700, 500)#craetes shop box inner background

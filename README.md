@@ -15,3 +15,12 @@ Art Chatgpt
 Ideas, Shops, code, Items, enemies,  Blake
 
 run `py dart.py`
+
+
+
+
+
+5/16/2026
+Important Update
+Around today I started work on a shop feature which you can toggle when pressing the r key. I mostly worked on all the Ui and collisions between buying the item in shop and saving it to your inventory. For the features it mostly works but there are few bugs which I plan on fixing. In addition I want to add randomness between rarities so better darts are harder to get or better items are harder to get. The Ui I though was very cool as I only built it using the rect function and drawing text. 
+One major update I intend to make is being able to change what darts you can select so depending on the enemy you are facing you can also change that. I also need to add better enemies as the current one does not work as well as I want it too. These additions will better the state of my game.
