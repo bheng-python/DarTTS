@@ -30,23 +30,24 @@ robot = pygame.transform.scale(robot, (75,75))#I wanted to use 75 75 for normal 
 robot.set_colorkey((255,255,255))#this code is just to get rid of the background
 eyeball = pygame.image.load("eyeball.png").convert_alpha()# same thing with the other convert alpha is good
 eyeball = pygame.transform.scale(eyeball, (75,75))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly
-eyeball.set_colorkey((255,255,255))#this code is just to get rid of the background
+eyeball.set_colorkey((255,255,255))#this code is just to get rid of the background, im pretty sure this should work as the color should be white
 tree = pygame.image.load("tree.png").convert_alpha()# same thing with the other convert alpha is good
-tree = pygame.transform.scale(tree, (75,75))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly
-tree.set_colorkey((255,255,255))#this code is just to get rid of the background
+tree = pygame.transform.scale(tree, (75,75))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly, although might change depending on if its a miniboss or normal enemy
+tree.set_colorkey((255,255,255))#this code is just to get rid of the background, i cant really see what color the background is so idk if its going to work
 #varraibles
-money = 0#i wanted to add a money function to the shop
-mode = "Normal"#change these between easy normal and hard for different diifculties will add a button later
+rand_items = None#used for varrying what items are in shop based on random importort
+money = 0#i wanted to add a money function to the shop, this is used for buyying various goods
+mode = "Normal"#change these between easy normal and hard for different diifculties will add a button later, also might add like a secreat difficulty like moon where everything is inverted like gravity
 enemy_health_mult = 1#this is for setting up difficulties
-damage_mult = 1#this is also for setting difficulties
+damage_mult = 1#this is also for setting difficulties, honstly i dont know why I have this and not just less health for enemys, or vice verca
 debug_mode = True#this is a booleg with flips between true and false to shop hitboxes or not
 health = 100# this line of code was for showing your health
 score = None#this I might change from score to kills but I do not know
 main_game = False#so this is to change what your seeing and to pause either the shop or the main game, change to true and you see the main game, change to false and you dont
 shop = True#so this is to change what your seeing and to pause either the shop or the main game,change to true and you see the shop, change to false and you dont
-damageable = 0#this is so if you hit the target you cant get repeated damage as the darts hitbox still interacts for a few seconds
-dart_pos = [150, 450]#this is for the darts position along the game board
-dart_vel = [0, 0]#this is for the current speed and direction for the dart
+damageable = 0#this is so if you hit the target you cant get repeated damage as the darts hitbox still interacts for a few seconds, it constanly adds 0.1 to this every tick so once you hit something it resets back to 0 so no inf damage
+dart_pos = [150, 450]#this is for the darts position along the game board[x,y]
+dart_vel = [0, 0]#this is for the current speed and direction for the dart, and used for gravity and stuff
 is_flying = False#this dectects if its flying such as when you release you mouse after you press down and drag
 drag_start = None#None is nil which means theres no object in its memoery and it will still not give a error code
 MAX_DRAG = 150  #this is how big you can drag the circle, change if you want it to go faster or slower
@@ -54,11 +55,12 @@ GRAVITY = 0.4 #change this to higher if you wont your dart to go down faster and
 running = True#first sets running to true
 #colors
 x1=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it#these three are for items, might change too two or one deppending on gamemode
-x2=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it
-x3=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it
+x2=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it, wait why didnt I just use one varaible, edit-for different buttons should be lit up, could have used for loop
+x3=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it, can only be up to around 45 due to rgb values can be above 255
 x4=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it#this is for the dart selection
 x5=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it, these two are for the buy and reroll buttons, Buy button
 x6=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it, reroll button
+#game
 while running:#this just runs it all
     if main_game:#This is for wether your in the shop or main game
         if mode == "Easy":#dectets if mode is easier then runs next 3 lines
@@ -201,6 +203,10 @@ while running:#this just runs it all
         #mouse_rect = pygame.mouse.get_pos()#allows for mouse movements
         #mouse_rect = pygame.Rect((mouse_rect), 10, 10)#creates a 10 pixel by 10 pixel hit box for mouse
         screen.fill((0, 0, 0))#screen fills so there are no blurring
+        mouse_pos = pygame.mouse.get_pos
+        #mouse_rect = pygame.Rect((event.pos), 10, 10)#creates a hit box for mouse, might add a minigame where you have to avoid darts falling down as a special boss, like a boss attack
+        #pygame.draw.rect(screen, (255, 255, 255), mouse_rect)#this code is for debuging so i can see the mouses hitbox
+        #x_mouse, y_mouse = event.pos#other code might not work
         for event in pygame.event.get():#gets various events, could have used outside of if shop or main menu
             if event.type == pygame.QUIT:#decects if you quit game, might add a quit anniamation
                 running = False#sets the game to stop running all code
