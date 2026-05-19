@@ -20,31 +20,39 @@ ground = pygame.transform.scale(ground, (800,457))#this code is for scaling it t
 #enemies
 #each of these 3 lines of code are for various descriptons of items.
 blue_flame_boss = pygame.image.load("blue_flame_boss.png").convert_alpha()#being able to convert alpha Im pretty sure allows you to use color key or it only worked if i added it
-blue_flame_boss = pygame.transform.scale(blue_flame_boss, (100,100))#i wanted to scale this up at a higher level then the others as I figured I needed a mini boss or a enemy that was higher
-blue_flame_boss.set_colorkey((255,255,255))#this code is just to get rid of the background
+blue_flame_boss = pygame.transform.scale(blue_flame_boss, (250,250))#i wanted to scale this up at a higher level then the others as I figured I needed a mini boss or a enemy that was higher
+blue_flame_boss.set_colorkey((246,246,246))#this code is just to get rid of the background
+boss_bool = False
 pumpkin = pygame.image.load("pumpkin.png").convert_alpha()# same thing with the other convert alpha is good
-pumpkin = pygame.transform.scale(pumpkin, (75, 75))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly
+pumpkin = pygame.transform.scale(pumpkin, (150, 150))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly
 pumpkin.set_colorkey((255,255,255))#this code is just to get rid of the background
+pumpkin_bool = False
 robot = pygame.image.load("robot.png").convert_alpha()# same thing with the other convert alpha is good
-robot = pygame.transform.scale(robot, (75,75))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly
+robot = pygame.transform.scale(robot, (150,150))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly
 robot.set_colorkey((255,255,255))#this code is just to get rid of the background
+robot_bool = False
 eyeball = pygame.image.load("eyeball.png").convert_alpha()# same thing with the other convert alpha is good
-eyeball = pygame.transform.scale(eyeball, (75,75))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly
+eyeball = pygame.transform.scale(eyeball, (150,150))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly
 eyeball.set_colorkey((255,255,255))#this code is just to get rid of the background, im pretty sure this should work as the color should be white
+eye_bool = True
 tree = pygame.image.load("tree.png").convert_alpha()# same thing with the other convert alpha is good
-tree = pygame.transform.scale(tree, (75,75))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly, although might change depending on if its a miniboss or normal enemy
+tree = pygame.transform.scale(tree, (300,300))#I wanted to use 75 75 for normal enemies as it looks mostly sized correctly, although might change depending on if its a miniboss or normal enemy
 tree.set_colorkey((255,255,255))#this code is just to get rid of the background, i cant really see what color the background is so idk if its going to work
+tree_bool = False
+enemy_Setup = True
 #varraibles
 rand_items = None#used for varrying what items are in shop based on random importort
+darts = 5
 money = 0#i wanted to add a money function to the shop, this is used for buyying various goods
 mode = "Normal"#change these between easy normal and hard for different diifculties will add a button later, also might add like a secreat difficulty like moon where everything is inverted like gravity
 enemy_health_mult = 1#this is for setting up difficulties
 damage_mult = 1#this is also for setting difficulties, honstly i dont know why I have this and not just less health for enemys, or vice verca
 debug_mode = True#this is a booleg with flips between true and false to shop hitboxes or not
 health = 100# this line of code was for showing your health
+health_setup = None
 score = None#this I might change from score to kills but I do not know
-main_game = False#so this is to change what your seeing and to pause either the shop or the main game, change to true and you see the main game, change to false and you dont
-shop = True#so this is to change what your seeing and to pause either the shop or the main game,change to true and you see the shop, change to false and you dont
+main_game = True#so this is to change what your seeing and to pause either the shop or the main game, change to true and you see the main game, change to false and you dont
+shop = False#so this is to change what your seeing and to pause either the shop or the main game,change to true and you see the shop, change to false and you dont
 damageable = 0#this is so if you hit the target you cant get repeated damage as the darts hitbox still interacts for a few seconds, it constanly adds 0.1 to this every tick so once you hit something it resets back to 0 so no inf damage
 dart_pos = [150, 450]#this is for the darts position along the game board[x,y]
 dart_vel = [0, 0]#this is for the current speed and direction for the dart, and used for gravity and stuff
@@ -54,6 +62,7 @@ MAX_DRAG = 150  #this is how big you can drag the circle, change if you want it 
 GRAVITY = 0.4 #change this to higher if you wont your dart to go down faster and lower if you want it to go more straight, also the downforce added each frame
 running = True#first sets running to true
 #colors
+color = 6
 x1=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it#these three are for items, might change too two or one deppending on gamemode
 x2=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it, wait why didnt I just use one varaible, edit-for different buttons should be lit up, could have used for loop
 x3=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it, can only be up to around 45 due to rgb values can be above 255
@@ -123,8 +132,43 @@ while running:#this just runs it all
                     elif shop == True:#switches them up for one button comands
                         shop = False#first sets shop to false so it dosent run anymore
                         main_game = True#then it loads many game
+                if event.key == pygame.K_z:
+                    tree_bool = True
+                    eye_bool = False
+                    boss_bool = False
+                    pumpkin_bool = False
+                    robot_bool = False
+                    enemy_Setup = True
+                if event.key == pygame.K_x:
+                    tree_bool = False
+                    eye_bool = True
+                    boss_bool = False
+                    pumpkin_bool = False
+                    robot_bool = False
+                    enemy_Setup = True
+                if event.key == pygame.K_c:
+                    tree_bool = False
+                    eye_bool = False
+                    boss_bool = True
+                    pumpkin_bool = False
+                    robot_bool = False
+                    enemy_Setup = True
+                if event.key == pygame.K_v:
+                    tree_bool = False
+                    eye_bool = False
+                    boss_bool = False
+                    pumpkin_bool = True
+                    robot_bool = False
+                    enemy_Setup = True
+                if event.key == pygame.K_b:
+                    tree_bool = False
+                    eye_bool = False
+                    boss_bool = False
+                    pumpkin_bool = False
+                    robot_bool = True
+                    enemy_Setup = True
         #the code is used for physics
-        if is_flying:#detects if you released the mouse then runs the darts gravity code
+        if is_flying and darts >= 0:#detects if you released the mouse then runs the darts gravity code
             dart_vel[1] += GRAVITY#adds the darts velicoty to gravity so it progresbily goes further down
             dart_pos[0] += dart_vel[0]#adds the darts x so it goes right
             dart_pos[1] += dart_vel[1]#adds the previous gravity code so it always goes down, thinking of making a upside down gamemode like moon gravity or smth
@@ -165,6 +209,44 @@ while running:#this just runs it all
             #pygame.draw.line(screen, (0, 255, 0), (0,450), (250, 450), 5)#this is for the horzantal line for inventory.
             small_wall_left = pygame.draw.line(screen, (0, 255, 0), (2.5, 300), (2.5,600), 5)#for the left most wall, not needed ngl
             small_wall_right = pygame.draw.line(screen, (0, 255, 0), (797.5, 300), (797.5,600), 5)#for the right most wall also probley not needed
+        #for enemys
+
+        if tree_bool:
+            screen.blit(tree, (500, -25))
+            if enemy_Setup == True:
+                health = 130
+                darts = 6
+                health_setup = 130
+                enemy_Setup = False
+        if eye_bool:
+            screen.blit(eyeball, (550, 75))
+            if enemy_Setup == True:
+                health = 50
+                darts = 3
+                health_setup = 50
+                enemy_Setup = False
+        if boss_bool:
+            screen.blit(blue_flame_boss, (500, 0))
+            if enemy_Setup == True:
+                health = 200
+                darts = 10
+                health_setup = 200
+                enemy_Setup = False
+        if pumpkin_bool:
+            screen.blit(pumpkin, (550, 75))
+            if enemy_Setup == True:
+                health = 90
+                darts = 4
+                health_setup = 90
+                enemy_Setup = False
+        if robot_bool:
+            screen.blit(robot, (550, 70))
+            if enemy_Setup == True:
+                health = 120
+                darts = 5
+                health_setup = 120
+                enemy_Setup = False
+
         #enemys
         #scoring debug wall_score# i had to make them very small so the dart couldnt hit two targets at once
         high_rect = pygame.Rect(790, 325, 10, 30)#this is for the best target, and first creating the sprite, idk why i put it here and not on top
@@ -174,13 +256,13 @@ while running:#this just runs it all
         low_rect = pygame.Rect(790, 525, 10, 30)#this is for the worse target, and first creating the sprite, idk why i put it here and not on top, kinda just a target you will always hit if you miss
         pygame.draw.rect(screen, (255,100,100), low_rect)#decided on light red for this target
         #enemy health
-        enemy_health_display = pygame.Rect(565, 215, 220, 60)#this is for drawing the box for the enemies health
+        enemy_health_display = pygame.Rect(505, 215, 320, 60)#this is for drawing the box for the enemies health
         pygame.draw.rect(screen, (128, 128, 128), enemy_health_display)#this is for blitting it to screen
-        enemy_health = pygame.Rect(575, 225, health*2, 40)#this multiples health by 2 so you can see a moving green health bar, acutally supposed to be down here because it constantly changes kidna
+        enemy_health = pygame.Rect(515, 225, health*2, 40)#this multiples health by 2 so you can see a moving green health bar, acutally supposed to be down here because it constantly changes kidna
         pygame.draw.rect(screen, (0, 255, 0), enemy_health)#this is used for bltting it
         text = font.render("health: "+str(health), True, (0,0,0))#this is for rendering the health so you can see it as a number, used for the players pov
         small_wall_middle = pygame.draw.line(screen, (0, 50, 255), (250,295), (250,600), 5)#these are lines for a box so you can only fire the dart from a certain area.
-        screen.blit(text, (575, 225))#blits the text
+        screen.blit(text, (515, 225))#blits the text
         if damageable > 6:#dectects if it can be damaged
             if rect.colliderect(high_rect):#if its colliding with the best target runs folling code
                 health -= 50#subtracts 50 health
@@ -197,16 +279,19 @@ while running:#this just runs it all
         if health <= 0:#dectects if you health is 0 or higher
             print("you lose")#for me dubugging
             print("your score is:", score)#also for me debugging
-            health = 100#sets health back to 100
+            health = health_setup#sets health back to 100
         damageable += 0.1#constanlty adds 0.1 to damagable so you can hit targets again
     if shop:#dectets if shop is running then runs follwoing coed
-        #mouse_rect = pygame.mouse.get_pos()#allows for mouse movements
-        #mouse_rect = pygame.Rect((mouse_rect), 10, 10)#creates a 10 pixel by 10 pixel hit box for mouse
+        if color >= 6:
+            x1 = 0#sets it back down to 0, absoulte limit
+            x2 = 0#sets it back down to 0, absoulte limit
+            x3 = 0#sets it back down to 0, absoulte limit
+            x4 = 0#sets it back down to 0, absoulte limit
+            x5 = 0
+            x6 = 0
         screen.fill((0, 0, 0))#screen fills so there are no blurring
-        mouse_pos = pygame.mouse.get_pos
-        #mouse_rect = pygame.Rect((event.pos), 10, 10)#creates a hit box for mouse, might add a minigame where you have to avoid darts falling down as a special boss, like a boss attack
-        #pygame.draw.rect(screen, (255, 255, 255), mouse_rect)#this code is for debuging so i can see the mouses hitbox
-        #x_mouse, y_mouse = event.pos#other code might not work
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_rect = pygame.Rect(mouse_pos[0], mouse_pos[1], 10, 10)
         for event in pygame.event.get():#gets various events, could have used outside of if shop or main menu
             if event.type == pygame.QUIT:#decects if you quit game, might add a quit anniamation
                 running = False#sets the game to stop running all code
@@ -220,29 +305,6 @@ while running:#this just runs it all
                     elif shop == True:#switches them up for one button comands
                         shop = False#first sets shop to false so it dosent run anymore
                         main_game = True#then it loads many game
-                if event.key == pygame.K_UP:#this is for debuging to colors for the buttons
-                    x1 += 15#sets all buttons to a higher color contrast
-                    x2 += 15#sets all buttons to a higher color contrast
-                    x3 += 15#sets all buttons to a higher color contrast
-                    x4 += 15#sets all buttons to a higher color contrast
-                if event.key == pygame.K_DOWN:#resets button color
-                    x1 = 0#sets it back to 0
-                    x2 = 0#sets it back to 0
-                    x3 = 0#sets it back to 0
-                    x4 = 0#sets it back to 0
-                if event.key == pygame.K_LEFT:#wanted a different code for buying and selling buttons
-                    x5 += 15#sets all buttons to a higher color contrast
-                    x6 += 15#sets all buttons to a higher color contrast
-                if event.key == pygame.K_RIGHT:#resets the colors
-                    x5 = 0#sets it back to 0
-                    x6 = 0#sets it back to 0
-        if x1 or x2 or x3 or x4 >= 45:#stops it from breaking cuz you cant have colors over 255
-            x1 = 45#sets it back down to 45, absoulte limit
-            x2 = 45#sets it back down to 45, absoulte limit
-            x3 = 45#sets it back down to 45, absoulte limit
-            x4 = 45#sets it back down to 45, absoulte limit
-        #if mouse_rect.colliderect(shop_box_1):# dectrects if your mouse is colliding with the shop
-            #x1 = 45#sets the colors to 45
         shop_box = pygame.Rect(25, 25, 750, 550)#creates shop box outer backgroudnd
         pygame.draw.rect(screen, (48, 31, 30), shop_box)#for drawing it
         shop_box_small = pygame.Rect(50, 50, 700, 500)#craetes shop box inner background
@@ -263,6 +325,26 @@ while running:#this just runs it all
         screen.blit(text_Reroll, (650, 260))#draws text
         text_Buy = font.render(("Buy"), True, (0,0,0))#same thing as previous 2
         screen.blit(text_Buy, (110, 260))#same thing as previous 3
+        pygame.draw.rect(screen, (255, 255, 255), mouse_rect)
+        if mouse_rect.colliderect(shop_box_1):# dectrects if your mouse is colliding with the shop
+            x1 = 45#sets the colors to 45
+            color = 0
+        if mouse_rect.colliderect(shop_box_2):# dectrects if your mouse is colliding with the shop
+            x2 = 45#sets the colors to 45
+            color = 0
+        if mouse_rect.colliderect(shop_box_3):# dectrects if your mouse is colliding with the shop
+            x3 = 45#sets the colors to 45
+            color = 0
+        if mouse_rect.colliderect(shop_dart):# dectrects if your mouse is colliding with the shop
+            x4 = 45#sets the colors to 45
+            color = 0
+        if mouse_rect.colliderect(shop_buy):# dectrects if your mouse is colliding with the shop
+            x5 = 45#sets the colors to 45
+            color = 0
+        if mouse_rect.colliderect(shop_reroll):# dectrects if your mouse is colliding with the shop
+            x6 = 45#sets the colors to 45
+            color = 0
+        color += 3
     pygame.display.flip()#shows the info on the screen
     clock.tick(60)#the tick rate
 
