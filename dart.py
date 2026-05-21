@@ -1,6 +1,7 @@
 #various imports
 import pygame
 import math
+import random
 #first loads up pygame
 pygame.init()
 screen = pygame.display.set_mode((800, 600))#might make bigger but just sets up the display and how big it is
@@ -8,10 +9,27 @@ clock = pygame.time.Clock()#sets up the clock code
 pygame.display.set_caption("Show Text")#these lines of code are for setting up the font
 font = pygame.font.SysFont("Arial", 24)#this is for the specfic font and font size for the game
 #image setup
+#orig dart
+dart_shop = pygame.image.load("dart2.png").convert()#this code loads the darts
+dart_shop = pygame.transform.scale(dart_shop, (400, 400))#this code scales the dart properly
+dart_shop = pygame.transform.rotate(dart_shop, 180)#this code rotates the dart so it faces the right direction when its still
+dart_shop.set_colorkey((210, 211, 213))
+#for cleaver
+x_shop = 200
+y_shop = 200
+cleaver_shop = pygame.image.load("cleaver_1.png").convert()
+cleaver_shop = pygame.transform.scale(cleaver_shop, (200, 200))
+cleaver_shop = pygame.transform.rotate(cleaver_shop, 150)
+cleaver_shop.set_colorkey((0,0,0))
+cleaver_shop_rect = cleaver_shop.get_rect()
+cleaver_shop_rect.topleft = (x_shop, y_shop)
+#for dart
 dart_orig = pygame.image.load("dart2.png").convert_alpha()#this code loads the darts
 dart_orig = pygame.transform.scale(dart_orig, (75, 75))#this code scales the dart properly
 dart_orig = pygame.transform.rotate(dart_orig, 180)#this code rotates the dart so it faces the right direction when its still
 dart_orig.set_colorkey((210,211,213))#I had to use something online to find the specific rgb value for the background to get rid of it
+#for cleaver
+
 #backgrund
 background = pygame.image.load("background4.jpg").convert_alpha()#this is for loading your basic background where the enemies will be
 background = pygame.transform.scale(background, (800,448))#this code is for scaling it to the correct width, I had to use a little math so it would still look ok
@@ -61,6 +79,9 @@ drag_start = None#None is nil which means theres no object in its memoery and it
 MAX_DRAG = 150  #this is how big you can drag the circle, change if you want it to go faster or slower
 GRAVITY = 0.4 #change this to higher if you wont your dart to go down faster and lower if you want it to go more straight, also the downforce added each frame
 running = True#first sets running to true
+cleaver_bool = True
+dart_bool = False
+setup = True
 #colors
 color = 6
 x1=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it#these three are for items, might change too two or one deppending on gamemode
@@ -72,6 +93,21 @@ x6=0#i wanted a varaible to add onto the shop buttons so if your hovering over t
 #game
 while running:#this just runs it all
     if main_game:#This is for wether your in the shop or main game
+        setup = True
+    #for what cleaver u wanna run
+        if cleaver_bool:
+            dart_orig = pygame.image.load("cleaver_1.png").convert_alpha()#this code loads the darts
+            dart_orig = pygame.transform.scale(dart_orig, (75, 75))#this code scales the dart properly
+            dart_orig = pygame.transform.rotate(dart_orig, 180)#this code rotates the dart so it faces the right direction when its still
+            dart_orig.set_colorkey((210,211,213))#I had to use something online to find the specific rgb value for the background to get rid of it
+        elif dart_bool:
+            dart_orig = pygame.image.load("dart2.png").convert_alpha()#this code loads the darts
+            dart_orig = pygame.transform.scale(dart_orig, (75, 75))#this code scales the dart properly
+            dart_orig = pygame.transform.rotate(dart_orig, 180)#this code rotates the dart so it faces the right direction when its still
+            dart_orig.set_colorkey((210,211,213))#I had to use something online to find the specific rgb value for the background to get rid of it
+        else:
+            dart_bool = True
+            cleaver_bool = False
         if mode == "Easy":#dectets if mode is easier then runs next 3 lines
             GRAVITY = 0.3#makes the dart get less affected by gravity
             enemy_health_mult = 0.7#sets enemy health to 70%
@@ -282,6 +318,10 @@ while running:#this just runs it all
             health = health_setup#sets health back to 100
         damageable += 0.1#constanlty adds 0.1 to damagable so you can hit targets again
     if shop:#dectets if shop is running then runs follwoing coed
+        if setup:
+            rand_shop = random.randrange(1, 11, 1)
+            print(rand_shop)
+            setup = False
         if color >= 6:
             x1 = 0#sets it back down to 0, absoulte limit
             x2 = 0#sets it back down to 0, absoulte limit
@@ -295,6 +335,15 @@ while running:#this just runs it all
         for event in pygame.event.get():#gets various events, could have used outside of if shop or main menu
             if event.type == pygame.QUIT:#decects if you quit game, might add a quit anniamation
                 running = False#sets the game to stop running all code
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if mouse_rect.colliderect(shop_dart):
+                    dart_bool = True
+                    cleaver_bool = False
+                    print("dart")
+                if mouse_rect.colliderect(cleaver_shop_rect):
+                    dart_bool = False
+                    cleaver_bool = True
+                    print("cleaver")
             if event.type == pygame.KEYDOWN:#dectets if your pressing down on a key
                 if event.key == pygame.K_m:#for debugging it
                     money = 1000#sets money to a high ammount
@@ -344,7 +393,10 @@ while running:#this just runs it all
         if mouse_rect.colliderect(shop_reroll):# dectrects if your mouse is colliding with the shop
             x6 = 45#sets the colors to 45
             color = 0
-        color += 3
+        if rand_shop < 6:
+            screen.blit(dart_shop, (210, 165))
+        if rand_shop > 6:
+            screen.blit(cleaver_shop, (x_shop, y_shop))
     pygame.display.flip()#shows the info on the screen
     clock.tick(60)#the tick rate
 
