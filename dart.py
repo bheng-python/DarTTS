@@ -10,24 +10,30 @@ pygame.display.set_caption("Show Text")#these lines of code are for setting up t
 font = pygame.font.SysFont("Arial", 24)#this is for the specfic font and font size for the game
 #image setup
 #orig dart
-dart_shop = pygame.image.load("dart2.png").convert()#this code loads the darts
-dart_shop = pygame.transform.scale(dart_shop, (400, 400))#this code scales the dart properly
-dart_shop = pygame.transform.rotate(dart_shop, 180)#this code rotates the dart so it faces the right direction when its still
-dart_shop.set_colorkey((210, 211, 213))
-#for cleaver
 x_shop = 200
 y_shop = 200
+dart_shop = pygame.image.load("dart2.png").convert()#this code loads the darts
+dart_shop = pygame.transform.scale(dart_shop, (400, 175))#this code scales the dart properly
+dart_shop = pygame.transform.rotate(dart_shop, 180)#this code rotates the dart so it faces the right direction when its still
+dart_shop.set_colorkey((210, 211, 213))
+dart_shop_rect = dart_shop.get_rect()
+dart_shop_rect.topleft = (x_shop, y_shop)
+target = pygame.image.load("Screenshot 2026-05-22 113143.png").convert()
+target = pygame.transform.scale(target, (50, 50))
+target.set_colorkey((198, 202, 207))
+#for cleaver
 cleaver_shop = pygame.image.load("cleaver_1.png").convert()
-cleaver_shop = pygame.transform.scale(cleaver_shop, (200, 200))
-cleaver_shop = pygame.transform.rotate(cleaver_shop, 150)
+cleaver_shop = pygame.transform.scale(cleaver_shop, (350, 350))
+cleaver_shop = pygame.transform.rotate(cleaver_shop, 230)
 cleaver_shop.set_colorkey((0,0,0))
 cleaver_shop_rect = cleaver_shop.get_rect()
 cleaver_shop_rect.topleft = (x_shop, y_shop)
 #for dart
 dart_orig = pygame.image.load("dart2.png").convert_alpha()#this code loads the darts
-dart_orig = pygame.transform.scale(dart_orig, (75, 75))#this code scales the dart properly
+dart_orig = pygame.transform.scale(dart_orig, (75, 35))#this code scales the dart properly
 dart_orig = pygame.transform.rotate(dart_orig, 180)#this code rotates the dart so it faces the right direction when its still
 dart_orig.set_colorkey((210,211,213))#I had to use something online to find the specific rgb value for the background to get rid of it
+
 #for cleaver
 
 #backgrund
@@ -60,9 +66,10 @@ tree_bool = False
 enemy_Setup = True
 #varraibles
 rand_items = None#used for varrying what items are in shop based on random importort
-darts = 5
+dmg = 0
+enemy_rand = 1
 money = 0#i wanted to add a money function to the shop, this is used for buyying various goods
-mode = "Normal"#change these between easy normal and hard for different diifculties will add a button later, also might add like a secreat difficulty like moon where everything is inverted like gravity
+mode = "Hard"#change these between easy normal and hard for different diifculties will add a button later, also might add like a secreat difficulty like moon where everything is inverted like gravity
 enemy_health_mult = 1#this is for setting up difficulties
 damage_mult = 1#this is also for setting difficulties, honstly i dont know why I have this and not just less health for enemys, or vice verca
 debug_mode = True#this is a booleg with flips between true and false to shop hitboxes or not
@@ -79,9 +86,10 @@ drag_start = None#None is nil which means theres no object in its memoery and it
 MAX_DRAG = 150  #this is how big you can drag the circle, change if you want it to go faster or slower
 GRAVITY = 0.4 #change this to higher if you wont your dart to go down faster and lower if you want it to go more straight, also the downforce added each frame
 running = True#first sets running to true
-cleaver_bool = True
-dart_bool = False
+cleaver_bool = False
+dart_bool = True
 setup = True
+enemy_rand_runs = True
 #colors
 color = 6
 x1=0#i wanted a varaible to add onto the shop buttons so if your hovering over them they turn brigther, might have overcomplicated it#these three are for items, might change too two or one deppending on gamemode
@@ -98,11 +106,11 @@ while running:#this just runs it all
         if cleaver_bool:
             dart_orig = pygame.image.load("cleaver_1.png").convert_alpha()#this code loads the darts
             dart_orig = pygame.transform.scale(dart_orig, (75, 75))#this code scales the dart properly
-            dart_orig = pygame.transform.rotate(dart_orig, 180)#this code rotates the dart so it faces the right direction when its still
+            dart_orig = pygame.transform.rotate(dart_orig, 240)#this code rotates the dart so it faces the right direction when its still
             dart_orig.set_colorkey((210,211,213))#I had to use something online to find the specific rgb value for the background to get rid of it
         elif dart_bool:
             dart_orig = pygame.image.load("dart2.png").convert_alpha()#this code loads the darts
-            dart_orig = pygame.transform.scale(dart_orig, (75, 75))#this code scales the dart properly
+            dart_orig = pygame.transform.scale(dart_orig, (65, 25))#this code scales the dart properly
             dart_orig = pygame.transform.rotate(dart_orig, 180)#this code rotates the dart so it faces the right direction when its still
             dart_orig.set_colorkey((210,211,213))#I had to use something online to find the specific rgb value for the background to get rid of it
         else:
@@ -168,43 +176,8 @@ while running:#this just runs it all
                     elif shop == True:#switches them up for one button comands
                         shop = False#first sets shop to false so it dosent run anymore
                         main_game = True#then it loads many game
-                if event.key == pygame.K_z:
-                    tree_bool = True
-                    eye_bool = False
-                    boss_bool = False
-                    pumpkin_bool = False
-                    robot_bool = False
-                    enemy_Setup = True
-                if event.key == pygame.K_x:
-                    tree_bool = False
-                    eye_bool = True
-                    boss_bool = False
-                    pumpkin_bool = False
-                    robot_bool = False
-                    enemy_Setup = True
-                if event.key == pygame.K_c:
-                    tree_bool = False
-                    eye_bool = False
-                    boss_bool = True
-                    pumpkin_bool = False
-                    robot_bool = False
-                    enemy_Setup = True
-                if event.key == pygame.K_v:
-                    tree_bool = False
-                    eye_bool = False
-                    boss_bool = False
-                    pumpkin_bool = True
-                    robot_bool = False
-                    enemy_Setup = True
-                if event.key == pygame.K_b:
-                    tree_bool = False
-                    eye_bool = False
-                    boss_bool = False
-                    pumpkin_bool = False
-                    robot_bool = True
-                    enemy_Setup = True
         #the code is used for physics
-        if is_flying and darts >= 0:#detects if you released the mouse then runs the darts gravity code
+        if is_flying:#detects if you released the mouse then runs the darts gravity code
             dart_vel[1] += GRAVITY#adds the darts velicoty to gravity so it progresbily goes further down
             dart_pos[0] += dart_vel[0]#adds the darts x so it goes right
             dart_pos[1] += dart_vel[1]#adds the previous gravity code so it always goes down, thinking of making a upside down gamemode like moon gravity or smth
@@ -233,6 +206,10 @@ while running:#this just runs it all
                             drag_start[1] + dy * MAX_DRAG / dist) #this the same thing as the previous line but for the y axis, used a little yt to get this code cuz lwk kinda hard,
 
             pygame.draw.line(screen, (255, 255, 255), drag_start, line_end, 2)#this draws a line from where you iniitally pressed down and the line end math
+        #targets
+        screen.blit(target, (750, 320))
+        screen.blit(target, (750, 420))
+        screen.blit(target, (750, 540))
         #draws the dart
         rotated_dart = pygame.transform.rotate(dart_orig, angle)#this draws the dart and changes its rotation as it goes along its trijcetory.
         rect = rotated_dart.get_rect(center=dart_pos)#this sets the center of the dart as its rotation point so not errors occur and make it look nicer
@@ -245,51 +222,87 @@ while running:#this just runs it all
             #pygame.draw.line(screen, (0, 255, 0), (0,450), (250, 450), 5)#this is for the horzantal line for inventory.
             small_wall_left = pygame.draw.line(screen, (0, 255, 0), (2.5, 300), (2.5,600), 5)#for the left most wall, not needed ngl
             small_wall_right = pygame.draw.line(screen, (0, 255, 0), (797.5, 300), (797.5,600), 5)#for the right most wall also probley not needed
+        if rect.colliderect(small_wall_left):
+            is_flying = False
         #for enemys
-
+        if enemy_rand_runs:
+            if enemy_rand == 10:
+                    tree_bool = False
+                    eye_bool = False
+                    boss_bool = True
+                    pumpkin_bool = False
+                    robot_bool = False
+                    enemy_Setup = True
+            if enemy_rand ==  8 or enemy_rand == 9:
+                    tree_bool = True
+                    eye_bool = False
+                    boss_bool = False
+                    pumpkin_bool = False
+                    robot_bool = False
+                    enemy_Setup = True
+            if enemy_rand == 5 or enemy_rand == 6 or enemy_rand == 7:
+                    tree_bool = False
+                    eye_bool = False
+                    boss_bool = False
+                    pumpkin_bool = True
+                    robot_bool = False
+                    enemy_Setup = True
+            if enemy_rand == 3 or enemy_rand == 4:
+                    tree_bool = False
+                    eye_bool = False
+                    boss_bool = False
+                    pumpkin_bool = False
+                    robot_bool = True
+                    enemy_Setup = True
+            if enemy_rand == 1 or enemy_rand == 2:
+                    tree_bool = False
+                    eye_bool = True
+                    boss_bool = False
+                    pumpkin_bool = False
+                    robot_bool = False
+                    enemy_Setup = True
         if tree_bool:
             screen.blit(tree, (500, -25))
             if enemy_Setup == True:
                 health = 130
-                darts = 6
                 health_setup = 130
                 enemy_Setup = False
+                enemy_rand_runs = False
         if eye_bool:
             screen.blit(eyeball, (550, 75))
             if enemy_Setup == True:
                 health = 50
-                darts = 3
                 health_setup = 50
                 enemy_Setup = False
+                enemy_rand_runs = False
         if boss_bool:
             screen.blit(blue_flame_boss, (500, 0))
             if enemy_Setup == True:
                 health = 200
-                darts = 10
                 health_setup = 200
                 enemy_Setup = False
+                enemy_rand_runs = False
         if pumpkin_bool:
             screen.blit(pumpkin, (550, 75))
             if enemy_Setup == True:
                 health = 90
-                darts = 4
                 health_setup = 90
                 enemy_Setup = False
+                enemy_rand_runs = False
         if robot_bool:
             screen.blit(robot, (550, 70))
             if enemy_Setup == True:
                 health = 120
-                darts = 5
                 health_setup = 120
                 enemy_Setup = False
-
+                enemy_rand_runs = False
         #enemys
         #scoring debug wall_score# i had to make them very small so the dart couldnt hit two targets at once
-        high_rect = pygame.Rect(790, 325, 10, 30)#this is for the best target, and first creating the sprite, idk why i put it here and not on top
+        high_rect = pygame.Rect(790, 340, 10, 1)#this is for the best target, and first creating the sprite, idk why i put it here and not on top
         pygame.draw.rect(screen, (100,100,255), high_rect)#this draws the spirte and at a specific color which i chose as a light blue
-        medium_rect = pygame.Rect(790, 425, 10, 30)#this is for the medium target, and first creating the sprite, idk why i put it here and not on top
+        medium_rect = pygame.Rect(790, 450, 10, 1)#this is for the medium target, and first creating the sprite, idk why i put it here and not on top
         pygame.draw.rect(screen, (100,255,100), medium_rect)#this draws the spirte and at a specific color which i chose as a light green
-        low_rect = pygame.Rect(790, 525, 10, 30)#this is for the worse target, and first creating the sprite, idk why i put it here and not on top, kinda just a target you will always hit if you miss
+        low_rect = pygame.Rect(790, 560, 10, 1)#this is for the worse target, and first creating the sprite, idk why i put it here and not on top, kinda just a target you will always hit if you miss
         pygame.draw.rect(screen, (255,100,100), low_rect)#decided on light red for this target
         #enemy health
         enemy_health_display = pygame.Rect(505, 215, 320, 60)#this is for drawing the box for the enemies health
@@ -301,21 +314,27 @@ while running:#this just runs it all
         screen.blit(text, (515, 225))#blits the text
         if damageable > 6:#dectects if it can be damaged
             if rect.colliderect(high_rect):#if its colliding with the best target runs folling code
-                health -= 50#subtracts 50 health
+                health -= 50+dmg#subtracts 50 health
                 print("health:", health)#prints health to console so I can debug
                 damageable = 0#sets damage back down to 0 so you dont do like inf damage
             elif rect.colliderect(medium_rect):#if its colliding with the ok target runs folling code
-                health -= 30#subtracts 30 health
+                health -= 30+dmg#subtracts 30 health
                 print("health:", health)#prints health to console so I can debug
                 damageable = 0#sets damage back down to 0 so you dont do like inf damage
             elif rect.colliderect(low_rect):#if its colliding with the terrible target runs folling code
-                health -= 10#subtracts 10 health kinda useless lwk but might add a like boss where you have to do exact damage or it gains health, or all enemies, interrestng
+                health -= 10+dmg#subtracts 10 health kinda useless lwk but might add a like boss where you have to do exact damage or it gains health, or all enemies, interrestng
                 print("health:", health)#prints health to console so I can debug
                 damageable = 0#sets damage back down to 0 so you dont do like inf damage
-        if health <= 0:#dectects if you health is 0 or higher
-            print("you lose")#for me dubugging
+        if health == 0:#dectects if you health is 0 or higher
+            print("you killed someone")#for me dubugging
             print("your score is:", score)#also for me debugging
             health = health_setup#sets health back to 100
+            enemy_rand = random.randrange(1, 11, 1)
+            enemy_rand_runs = True
+            print("enemy_rand:", enemy_rand)
+        elif health < 0:
+            print("you did too much damage")
+            health += 30
         damageable += 0.1#constanlty adds 0.1 to damagable so you can hit targets again
     if shop:#dectets if shop is running then runs follwoing coed
         if setup:
@@ -337,13 +356,16 @@ while running:#this just runs it all
                 running = False#sets the game to stop running all code
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_rect.colliderect(shop_dart):
-                    dart_bool = True
-                    cleaver_bool = False
-                    print("dart")
-                if mouse_rect.colliderect(cleaver_shop_rect):
-                    dart_bool = False
-                    cleaver_bool = True
-                    print("cleaver")
+                    if rand_shop <= 6:
+                        dart_bool = True
+                        cleaver_bool = False
+                        print("You selected the DART!")
+                        dmg = 0
+                    else: # This means rand_shop >= 6
+                        dart_bool = False
+                        cleaver_bool = True
+                        print("You selected the CLEAVER!")
+                        dmg = -10
             if event.type == pygame.KEYDOWN:#dectets if your pressing down on a key
                 if event.key == pygame.K_m:#for debugging it
                     money = 1000#sets money to a high ammount
@@ -393,10 +415,10 @@ while running:#this just runs it all
         if mouse_rect.colliderect(shop_reroll):# dectrects if your mouse is colliding with the shop
             x6 = 45#sets the colors to 45
             color = 0
-        if rand_shop < 6:
-            screen.blit(dart_shop, (210, 165))
+        if rand_shop <= 6:
+            screen.blit(dart_shop, (210, 282))
         if rand_shop > 6:
-            screen.blit(cleaver_shop, (x_shop, y_shop))
+            screen.blit(cleaver_shop, (160, 75))
     pygame.display.flip()#shows the info on the screen
     clock.tick(60)#the tick rate
 
